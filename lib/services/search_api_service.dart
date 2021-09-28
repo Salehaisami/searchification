@@ -16,7 +16,7 @@ class SearchAPI {
       {required String query,
       int pageNumber = 0}) {
     var baseUrl = 'https://serpapi.com/search.json?engine=google&q=$query&'
-        'tbm=isch&ijn=$pageNumber&api_key=$API_KEY&';
+        'tbm=isch&ijn=$pageNumber&api_key=$API_KEY';
     return baseUrl;
   }
 

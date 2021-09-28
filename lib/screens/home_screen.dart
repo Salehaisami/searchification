@@ -49,34 +49,36 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: Row(
-              // mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: ButtonBar(
-                    buttonPadding: EdgeInsets.all(5),
-                    alignment: MainAxisAlignment.center,
-                    children: [
-                      SearchificationButtons.logoButton('assets/yahoo_logo.png',
-                          () => print('yahoo'), Colors.purple),
-                      SearchificationButtons.logoButton(
-                          'assets/google_logo.png',
-                          () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => SearchScreen()),
-                              ),
-                          Colors.deepOrange,
-                          true),
-                      SearchificationButtons.logoButton('assets/baidu_logo.png',
-                          () => print('baidu'), Colors.blue),
-                    ],
-              ),
-            )
+            child: SafeArea(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ButtonBar(
+                      buttonPadding: EdgeInsets.all(5),
+                      alignment: MainAxisAlignment.center,
+                      children: [
+                        SearchificationButtons.logoButton('assets/yahoo_logo.png',
+                            () => print('yahoo'), Colors.purple),
+                        SearchificationButtons.logoButton(
+                            'assets/google_logo.png',
+                            () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchScreen()),
+                                ),
+                            Colors.deepOrange,
+                            true),
+                        SearchificationButtons.logoButton('assets/baidu_logo.png',
+                            () => print('baidu'), Colors.blue),
+                      ],
+                ),
+              )
           ],
         ),
+            ),
       ),
     ]));
   }

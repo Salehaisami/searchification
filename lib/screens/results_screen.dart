@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
-import 'package:searchification/models/Search_result.dart';
+import 'package:searchification/models/search_result.dart';
 import 'package:searchification/providers/search_provider.dart';
 import 'package:searchification/screens/detailed_image_screen.dart';
 
@@ -16,6 +16,7 @@ class ResultsScreen extends StatefulWidget {
 }
 
 class _ResultsScreenState extends State<ResultsScreen> {
+  var oldQuery = '';
 
   final PagingController<int, SearchResultImage> _pagingController =
   PagingController(firstPageKey: 0);
@@ -46,14 +47,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
 
   Future<void> _fetchPage(int pageKey) async {
-    print("fetching more....");
+    print("fetching pages....");
     try {
       var searchProvider = Provider.of<SearchProvider>(context, listen: false);
       final newImages = await searchProvider.searchImages(pageKey);
       print('images fetched: ${newImages.length}');
-      print('\nimages fetched so far: ${_pagingController.itemList?.length}');
+      print('images fetched so far: ${_pagingController.itemList?.length}');
 
-      if (pageKey == 3) {
+      if (pageKey == 0) { // fetch up to 300 images only
         _pagingController.appendLastPage(newImages);
       }
       else {
@@ -67,11 +68,16 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var searchProvider = Provider.of<SearchProvider>(context, listen:false);
+    var newQuery = Provider.of<SearchProvider>(context, listen:false).query;
 
-    // The boolean check is to make sure the widget doesn't try to search
-    // while there is no query entered by the user yet. Thus the empty container.
-    return (!searchProvider.isQueryEmpty()) ? RefreshIndicator(
+    if (oldQuery.isEmpty || oldQuery != newQuery){
+      if (newQuery.isNotEmpty){
+        oldQuery = newQuery;
+        _pagingController.refresh();
+      }
+    }
+
+    return RefreshIndicator(
       onRefresh: () async {
         print('refreshing results..');
         return await Future.sync(
@@ -80,7 +86,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
       child: Container(
         color: Colors.black,
         child: PagedGridView<int, SearchResultImage>(
-          shrinkWrap: true,reverse: false,
+          shrinkWrap: true,
+          reverse: false,
             physics: ScrollPhysics(),
             pagingController: _pagingController,
             padding: const EdgeInsets.all(8),
@@ -94,8 +101,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           crossAxisCount: 3,
         ),
         ),
-      ),
-    ) : Container();
+      ));
   }
 
   @override

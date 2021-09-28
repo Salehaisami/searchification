@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:searchification/models/Search_result.dart';
+import 'package:searchification/models/search_result.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
 /// Creates a card with a gesture detector around the thumbnail image to
